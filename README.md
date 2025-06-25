@@ -1,6 +1,6 @@
 # TestYCM
 
-## 專案概述
+## 專案概述 (only for Android)
 YCM 第二階段面試題目
 - Google 登入認證
 - 聊天功能（整合 OpenAI API）
@@ -33,11 +33,6 @@ TestYCM/
    ```bash
    npm install
    ```
-3. 安裝 iOS 相依套件（僅限 macOS）：
-   ```bash
-   bundle install
-   bundle exec pod install
-   ```
 
 ## 執行專案
 1. 啟動 Metro Bundler：
@@ -48,11 +43,6 @@ TestYCM/
 2. 運行 Android 版本：
    ```bash
    npm run android
-   ```
-
-3. 運行 iOS 版本：
-   ```bash
-   npm run ios
    ```
 
 ## 功能說明
