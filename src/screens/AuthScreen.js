@@ -8,7 +8,8 @@ function AuthScreen({ navigation }) {
     try {
       // 檢查是否已經登入
       console.log('@@signIn')
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      console.log(await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true }))
+
       const signInResult = await GoogleSignin.signIn();
       console.log('signInResult', signInResult)
       idToken = signInResult.data?.idToken;

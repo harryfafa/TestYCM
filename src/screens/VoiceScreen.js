@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, PermissionsAndroid } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, PermissionsAndroid, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Voice from '@react-native-voice/voice';
-import { chatWithAI } from '../config/openai';
+import { speechWithAI, chatWithAI } from '../config/openai';
 import TTS from 'react-native-tts';
+import Markdown from 'react-native-markdown-display';
+import Sound from 'react-native-sound';
+Sound.setCategory('Playback');
 
 export default function VoiceScreen() {
   const [isListening, setIsListening] = useState(false);
   const [transcription, setTranscription] = useState('');
   const [status, setStatus] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
+  const [aiResponse, setAiResponse] = useState(``);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -72,7 +75,26 @@ export default function VoiceScreen() {
   // 處理 AI 回覆的語音播放
   useEffect(() => {
     if (aiResponse) {
-      TTS.speak(aiResponse);
+      speechWithAI(aiResponse)
+        .then(filePath => {
+          console.log('Audio file path:', filePath);
+
+          const sound = new Sound(filePath, '', (error) => {
+            if (error) {
+              console.log('播放失敗:', error);
+              return;
+            }
+            sound.play((success) => {
+              if (!success) {
+                console.log('播放時發生錯誤');
+              }
+              sound.release(); // 播放完釋放資源
+            });
+          });
+        })
+        .catch(err => {
+          console.log('TTS 發生錯誤:', err);
+        });
     }
   }, [aiResponse]);
 
@@ -140,20 +162,20 @@ export default function VoiceScreen() {
     <View style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>語音輸入</Text>
-
         <View style={styles.transcriptionContainer}>
-          <Text style={styles.transcriptionTitle}>辨識結果:</Text>
-          <Text style={styles.transcriptionText}>{transcription}</Text>
-          <Text style={styles.transcriptionTitle}>AI 回覆:</Text>
-          <Text style={styles.aiResponseText}>{aiResponse}</Text>
-          {isLoading && (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="small" color="#000" />
-              <Text style={styles.loadingText}>正在處理中...</Text>
-            </View>
-          )}
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <Text style={styles.transcriptionTitle}>辨識結果:</Text>
+            <Text style={styles.transcriptionText}>{transcription}</Text>
+            <Text style={styles.transcriptionTitle}>AI 回覆:</Text>
+            <Markdown style={{ body: styles.aiResponseText }}>{aiResponse}</Markdown>
+            {isLoading && (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="small" color="#000" />
+                <Text style={styles.loadingText}>正在處理中...</Text>
+              </View>
+            )}
+          </ScrollView>
         </View>
-
         <TouchableOpacity
           style={[styles.voiceButton, isListening && styles.recordingButton]}
           onPress={handleVoiceButtonPress}
@@ -175,7 +197,7 @@ export default function VoiceScreen() {
           )}
         </TouchableOpacity>
       </View>
-    </View>
+    </View >
   );
 }
 
@@ -184,6 +206,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
     padding: 20,
+    marginTop: 20
   },
   content: {
     flex: 1,
@@ -210,6 +233,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    maxHeight: '75%',
   },
   transcriptionTitle: {
     fontSize: 16,
@@ -234,6 +258,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   voiceButton: {
+    height: '10%',
     backgroundColor: '#1a73e8',
     padding: 20,
     borderRadius: 50,
@@ -261,5 +286,8 @@ const styles = StyleSheet.create({
   },
   aiResponseText: {
     color: 'black'
+  },
+  scrollContainer: {
+    justifyContent: 'center'
   }
 });

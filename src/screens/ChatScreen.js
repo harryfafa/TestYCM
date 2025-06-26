@@ -1,18 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, InteractionManager } from 'react-native';
 import { chatWithAI } from '../config/openai';
+import Markdown from 'react-native-markdown-display';
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const flatListRef = useRef(null);
+  const prevDataLength = useRef(0);
 
-  useEffect(() => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToEnd({ animated: true });
+  const handleContentChange = (w, h) => {
+    if (messages.length > prevDataLength.current) {
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => {
+          flatListRef.current?.scrollToEnd({ animated: true });
+        }, 50);
+      });
     }
-  }, [messages])
+    prevDataLength.current = messages.length;
+  };
 
   const sendMessage = async () => {
     if (inputText.trim()) {
@@ -60,9 +67,9 @@ export default function ChatScreen() {
 
   const renderMessage = ({ item }) => (
     <View style={[styles.messageContainer, item.isUser ? styles.userMessage : styles.aiMessage]}>
-      <Text style={styles.messageText}>{item.text}</Text>
+      <Markdown style={{ body: styles.messageText }}>{item.text}</Markdown>
       <Text style={item.isUser ? styles.userTimestamp : styles.aiTimestamp}>{item.timestamp}</Text>
-    </View>
+    </View >
   );
 
   return (
@@ -78,6 +85,7 @@ export default function ChatScreen() {
           keyExtractor={(item) => item.id}
           inverted={false}
           style={styles.messagesList}
+          onContentSizeChange={handleContentChange}
         />
       </View>
 

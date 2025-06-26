@@ -1,7 +1,12 @@
 import OpenAI from 'react-native-openai';
+import RNFS from 'react-native-fs';
+import { Buffer } from 'buffer';
+global.Buffer = Buffer;
+
+const apiKey = '';
 
 const openAI = new OpenAI({
-    apiKey: '',
+    apiKey
 });
 
 export const chatWithAI = async (message) => {
@@ -21,5 +26,26 @@ export const chatWithAI = async (message) => {
         throw error;
     }
 };
+
+export const speechWithAI = async (message) => {
+    const response = await fetch('https://api.openai.com/v1/audio/speech', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            model: 'tts-1',
+            input: message,
+            voice: 'fable',
+        }),
+    });
+
+    const arrayBuffer = await response.arrayBuffer();
+    const base64Data = Buffer.from(arrayBuffer).toString('base64');
+    const filePath = `${RNFS.DocumentDirectoryPath}/speech.mp3`;
+    await RNFS.writeFile(filePath, base64Data, 'base64');
+    return filePath;
+}
 
 export default openAI;
