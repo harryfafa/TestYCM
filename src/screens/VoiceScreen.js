@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Permission
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Voice from '@react-native-voice/voice';
 import { speechWithAI, chatWithAI } from '../config/openai';
-import TTS from 'react-native-tts';
 import Markdown from 'react-native-markdown-display';
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
@@ -21,11 +20,6 @@ export default function VoiceScreen() {
       console.log('開始語音辨識:', e);
       setStatus('正在錄音...');
     };
-
-    // 設定 TTS 初始化
-    TTS.setDefaultLanguage('zh-TW');
-    TTS.setDefaultRate(0.5);
-    TTS.setDefaultPitch(1.0);
 
     Voice.onSpeechEnd = (e) => {
       console.log('結束語音辨識:', e);
