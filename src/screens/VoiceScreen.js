@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, PermissionsAndroid, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Voice from '@react-native-voice/voice';
-import { speechWithAI, chatWithAI } from '../config/openai';
+import { speechWithAI, chatWithAI } from '../utils/openai';
 import Markdown from 'react-native-markdown-display';
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');

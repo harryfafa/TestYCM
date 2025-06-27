@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, InteractionManager } from 'react-native';
-import { chatWithAI } from '../config/openai';
+import { chatWithAI } from '../utils/openai';
 import Markdown from 'react-native-markdown-display';
 
 export default function ChatScreen() {
