@@ -8,8 +8,8 @@
 - 
 ## 體驗試用
 - https://drive.google.com/file/d/1WUbT9HGPRxedkcPZ8u1eLAFgMP221z65/view?usp=sharing
-- 請向本人所要 apk google drive 存取權
-- 
+- 請向本人索要 apk google drive 存取權
+  
 ## 技術架構
 - **前端框架**：React Native 0.80.0
 - **導航**：React Navigation（Bottom Tabs 和 Native Stack）
