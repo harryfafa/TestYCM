@@ -1,7 +1,7 @@
 # TestYCM
 
 ## 專案概述 (only for Android)
-YCM 第二階段面試題目
+一個利用 AI 輔助開發的一個 AI APP
 - Google 登入認證
 - 聊天功能（整合 OpenAI API）
 - 語音識別與文字轉語音功能
@@ -59,6 +59,3 @@ TestYCM/
 - 需要有效的 Google Sign-In Web Client ID
 - 需要設定 Firebase 專案並配置相關認證
 - 需要 OpenAI API 金鑰進行聊天功能
-
-## 問題排除
-如遇到問題，請先參考 React Native 官方的 [問題排除指南](https://reactnative.dev/docs/troubleshooting)
