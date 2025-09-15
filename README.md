@@ -5,7 +5,11 @@
 - Google 登入認證
 - 聊天功能（整合 OpenAI API）
 - 語音識別與文字轉語音功能
-
+- 
+## 體驗試用
+- https://drive.google.com/file/d/1WUbT9HGPRxedkcPZ8u1eLAFgMP221z65/view?usp=sharing
+- 請向本人所要 apk google drive 存取權
+- 
 ## 技術架構
 - **前端框架**：React Native 0.80.0
 - **導航**：React Navigation（Bottom Tabs 和 Native Stack）
@@ -59,7 +63,3 @@ TestYCM/
 - 需要有效的 Google Sign-In Web Client ID
 - 需要設定 Firebase 專案並配置相關認證
 - 需要 OpenAI API 金鑰進行聊天功能
-
-## 體驗試用
-- https://drive.google.com/file/d/1WUbT9HGPRxedkcPZ8u1eLAFgMP221z65/view?usp=sharing
-- 請向本人所要 apk google drive 存取權
